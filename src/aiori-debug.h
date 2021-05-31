@@ -45,11 +45,9 @@ extern int aiori_warning_as_errors;
 #define EWARNF(FORMAT, ...) do {                                         \
         if(aiori_warning_as_errors){ ERRF(FORMAT, __VA_ARGS__); }          \
         if (verbose > VERBOSE_2) {                                       \
-            fprintf(out_logfile, "WARNING: " FORMAT ", (%s:%d).\n", \
-                    __VA_ARGS__,  __FILE__, __LINE__); \
+            fprintf(out_logfile, "WARNING: " FORMAT ", (%s:%d).\n", ##__VA_ARGS__,  __FILE__, __LINE__); \
         } else {                                                         \
-            fprintf(out_logfile, "WARNING: " FORMAT "\n",  \
-                    __VA_ARGS__);                \
+            fprintf(out_logfile, "WARNING: " FORMAT "\n", ##__VA_ARGS__); \
         }                                                                \
         fflush(out_logfile);                                                  \
 } while (0)
@@ -64,19 +62,16 @@ extern int aiori_warning_as_errors;
 /* warning with format string and errno printed */
 #define EINFO(FORMAT, ...) do {                                         \
         if (verbose > VERBOSE_2) {                                       \
-            fprintf(out_logfile, "INFO: " FORMAT ", (%s:%d).\n", \
-                    __VA_ARGS__,  __FILE__, __LINE__); \
+            fprintf(out_logfile, "INFO: " FORMAT ", (%s:%d).\n", ##__VA_ARGS__,  __FILE__, __LINE__); \
         } else {                                                         \
-            fprintf(out_logfile, "INFO: " FORMAT "\n",  \
-                    __VA_ARGS__);                \
+            fprintf(out_logfile, "INFO: " FORMAT "\n", ##__VA_ARGS__); \
         }                                                                \
         fflush(out_logfile);                                                  \
 } while (0)
 
 /* display error message with format string and terminate execution */
 #define ERRF(FORMAT, ...) do {                                           \
-        fprintf(out_logfile, "ERROR: " FORMAT ", (%s:%d)\n", \
-                __VA_ARGS__, __FILE__, __LINE__); \
+        fprintf(out_logfile, "ERROR: " FORMAT ", (%s:%d)\n", __FILE__, __LINE__); \
         fflush(out_logfile);                                                  \
         MPI_Abort(MPI_COMM_WORLD, -1);                                   \
 } while (0)
